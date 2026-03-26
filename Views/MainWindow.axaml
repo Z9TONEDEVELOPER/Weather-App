@@ -8,13 +8,37 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Weather_App">
-
+        <Window.Background>
+            <RadialGradientBrush GradientOrigin="50%,50%" 
+                                 Center="50%,50%" 
+                                 RadiusX="80%" 
+                                 RadiusY="80%">
+            
+                <!-- Цвета градиента (от центра к краям) -->
+                <GradientStop Color="#0F172A" Offset="0" />
+                <GradientStop Color="#1E2937" Offset="0.5" />
+                <GradientStop Color="#334155" Offset="1" />
+            </RadialGradientBrush>
+        </Window.Background>
+    
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid ColumnDefinitions="*,*,400,*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="18" Foreground="DarkGray" FontFamily="Impact">WeatherApp</TextBlock>
+        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Margin="1" HorizontalAlignment="Stretch" Watermark="Введите город (Пример: Москва)" Text="{Binding CityInput}"><TextBox.KeyBindings><KeyBinding Gesture="Enter" Command="{Binding SearchCityCommand}"></KeyBinding></TextBox.KeyBindings></TextBox>
+        <ListBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding SearchResult}" SelectedItem="{Binding SelectedCity}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding StatusMessage}" FontSize="20"></TextBlock>
+        
+    </Grid>
+    
 
 </Window>
