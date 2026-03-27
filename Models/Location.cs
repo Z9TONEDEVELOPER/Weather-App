@@ -11,7 +11,7 @@ public class Location
     public double Longitude { get; set; }
     [JsonPropertyName("country")] 
     public string Country { get; set; } = "";
-    [JsonPropertyName("admin1")]
+    [JsonPropertyName("admin1")] 
     public string? Admin1 { get; set; }
     public string DisplayName => string.IsNullOrEmpty(Admin1)?$"{Name}, {Country}":$"{Name}, {Admin1}, {Country}";
 
