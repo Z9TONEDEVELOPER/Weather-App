@@ -19,7 +19,7 @@ public class WeatherService
         string url = $"https://api.open-meteo.com/v1/forecast?" +
                      $"latitude={lat.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
                      $"&longitude={lon.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
-                     $"&hourly=temperature_2m" +
+                     $"&hourly=temperature_2m,weather_code" +
                      $"&timezone=Europe%2FMoscow" +
                      $"&forecast_days=1";
         string json = await _client.GetStringAsync(url);

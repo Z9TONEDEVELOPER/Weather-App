@@ -3,42 +3,118 @@
         xmlns:vm="using:Weather_App.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" 
+        d:DesignWidth="900" 
+        d:DesignHeight="620"
         x:Class="Weather_App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Weather_App">
-        <Window.Background>
-            <RadialGradientBrush GradientOrigin="50%,50%" 
-                                 Center="50%,50%" 
-                                 RadiusX="80%" 
-                                 RadiusY="80%">
-            
-                <!-- Цвета градиента (от центра к краям) -->
-                <GradientStop Color="#0F172A" Offset="0" />
-                <GradientStop Color="#1E2937" Offset="0.5" />
-                <GradientStop Color="#334155" Offset="1" />
-            </RadialGradientBrush>
-        </Window.Background>
-    
+        Title="Weather App"
+        MinWidth="800"
+        MinHeight="550"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- Красивый радиальный фон -->
+    <Window.Background>
+        <RadialGradientBrush GradientOrigin="50%,40%" 
+                             Center="50%,45%" 
+                             RadiusX="95%" 
+                             RadiusY="85%">
+            <GradientStop Color="#0F172A" Offset="0.0" />
+            <GradientStop Color="#1E2937" Offset="0.45" />
+            <GradientStop Color="#334155" Offset="1.0" />
+        </RadialGradientBrush>
+    </Window.Background>
+
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <Grid ColumnDefinitions="*,*,400,*,*" RowDefinitions="Auto,Auto,Auto,Auto">
-        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" FontSize="18" Foreground="DarkGray" FontFamily="Impact">WeatherApp</TextBlock>
-        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Margin="1" HorizontalAlignment="Stretch" Watermark="Введите город (Пример: Москва)" Text="{Binding CityInput}"><TextBox.KeyBindings><KeyBinding Gesture="Enter" Command="{Binding SearchCityCommand}"></KeyBinding></TextBox.KeyBindings></TextBox>
-        <ListBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding SearchResult}" SelectedItem="{Binding SelectedCity}">
+
+    <Grid Margin="30" RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,500,*">
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   Text="Weather App"
+                   FontSize="32"
+                   FontWeight="SemiBold"
+                   Foreground="#E2E8F0"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,20"/>
+
+        <!-- Поиск -->
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding CityInput}"
+                 Watermark="Введите город (например: Москва)"
+                 FontSize="18"
+                 Padding="16,12"
+                 CornerRadius="12"
+                 Background="#1E2937"
+                 Foreground="White">
+            <TextBox.KeyBindings>
+                <KeyBinding Gesture="Enter" Command="{Binding SearchCityCommand}"/>
+            </TextBox.KeyBindings>
+        </TextBox>
+
+        <!-- Список городов -->
+        <ListBox Grid.Row="2" Grid.Column="1"
+                 ItemsSource="{Binding SearchResult}"
+                 SelectedItem="{Binding SelectedCity}"
+                 Height="160"
+                 Margin="0,15,0,20"
+                 Background="#1F2A3C"
+                 CornerRadius="12"
+                 BorderThickness="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                    <TextBlock Text="{Binding DisplayName}" 
+                               FontSize="16"
+                               Padding="12,8"
+                               Foreground="#CBD5E1"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding StatusMessage}" FontSize="20"></TextBlock>
-        
-    </Grid>
-    
 
+        <!-- Главная карточка погоды -->
+        <Border Grid.Row="3" Grid.Column="1"
+                Background="#1E2937"
+                CornerRadius="20"
+                Padding="30"
+                Margin="0,10,0,0"
+                BoxShadow="0 10 30 0 #00000040">
+
+            <StackPanel Spacing="15" HorizontalAlignment="Center">
+
+                <!-- Город -->
+                <TextBlock Text="{Binding SelectedCity.Name}" 
+                           FontSize="28" 
+                           FontWeight="SemiBold"
+                           Foreground="#F1F5F9"
+                           HorizontalAlignment="Center"
+                           IsVisible="{Binding SelectedCity}"/>
+
+                <!-- Иконка погоды (сюда будем добавлять) -->
+                <PathIcon Data="{Binding WeatherIconPath}" 
+                          Width="120" 
+                          Height="120"
+                          Foreground="#F8FAFC"
+                          HorizontalAlignment="Center"
+                          />
+
+                <!-- Температура -->
+                <TextBlock Text="{Binding CurrentTemperature}"
+                           FontSize="68"
+                           FontWeight="Light"
+                           Foreground="#F8FAFC"
+                           HorizontalAlignment="Center"/>
+
+                <!-- Статус -->
+                <TextBlock Text="{Binding StatusMessage}" 
+                           FontSize="17"
+                           Foreground="#94A3B8"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+    </Grid>
 </Window>
